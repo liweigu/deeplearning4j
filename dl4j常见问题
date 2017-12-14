@@ -14,3 +14,7 @@
 建议：
   1）用maven加载jar包；
   2）阅读官网。
+
+4，训练时产生NaN值
+回答：梯度消失导致的数据向下溢出。建议优化训练网络。
+参考：https://deeplearning4j.org/troubleshootingneuralnets#NaN
