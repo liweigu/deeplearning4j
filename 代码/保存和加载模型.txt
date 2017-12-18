@@ -1,0 +1,8 @@
+保存模型：
+BufferedOutputStream stream = new BufferedOutputStream(...);
+ModelSerializer.writeModel( trainedNetwork, stream, true );
+
+加载模型：
+InputStream stream = ...
+MultiLayerNetwork network = ModelSerializer.restoreMultiLayerNetwork( stream
+);
