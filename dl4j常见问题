@@ -19,3 +19,12 @@
 4，训练时产生NaN值
 回答：梯度消失导致的数据向下溢出。建议优化训练网络。
 参考：https://deeplearning4j.org/troubleshootingneuralnets#NaN
+
+5，dl4j的性能如何
+参考：
+Package        CPU        GPU        Multi        Accuracy
+Dl4j        20m08s        3m13s        1m18s        ~99.0%
+Caffe        19m52s        53s        1m14s        ~99.0%
+Tensorflow        5m15s        1m44s        2m44s        ~98.6%
+Torch        18m03s        6m25s        3m50s        ~98.3%
+
