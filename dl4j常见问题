@@ -23,6 +23,7 @@
 
 5，dl4j的性能如何
 参考：
+LeNet Example w/cuDNN 
 Package        CPU        GPU        Multi        Accuracy
 Dl4j        20m08s        3m13s        1m18s        ~99.0%
 Caffe        19m52s        53s        1m14s        ~99.0%
