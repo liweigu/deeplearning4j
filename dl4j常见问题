@@ -3,8 +3,9 @@
   1）阅读官网deeplearning4j.org；
   2）加官方QQ群289058486，阅读群文件；
   3）看网易上吴恩达的视频，学习理论基础；
-  4）https://github.com/sjsdfg/deeplearning4j-issues
-  5）http://blog.csdn.net/wangongxi
+  4）https://github.com/sjsdfg/deeplearning4j-issues （QQ群成员分享）
+  5）http://blog.csdn.net/wangongxi （QQ群成员分享）
+  6）https://github.com/rainforc/mycode （QQ群成员分享）
 
 2，运行dl4j的mnist示例程序，报zip相关异常。
 回答：mnist示例程序需要动态从网上下载mnist数据集，下载成功后会解压文件再计算，如果下载不成功则会提示zip相关异常。建议
