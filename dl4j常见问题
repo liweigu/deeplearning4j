@@ -32,5 +32,7 @@ Caffe        19m52s        53s        1m14s        ~99.0%
 Tensorflow        5m15s        1m44s        2m44s        ~98.6%
 Torch        18m03s        6m25s        3m50s        ~98.3%
 
-6，如何调整超参数
-参考：https://deeplearning4j.org/cn/neuralnet-configuration.html
+6，如何选择神经网络和调整超参数
+参考：
+	https://deeplearning4j.org/cn/neuralnetworktable.html
+	https://deeplearning4j.org/cn/neuralnet-configuration.html
