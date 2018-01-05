@@ -36,3 +36,13 @@ Torch        18m03s        6m25s        3m50s        ~98.3%
 参考：
 	https://deeplearning4j.org/cn/neuralnetworktable.html
 	https://deeplearning4j.org/cn/neuralnet-configuration.html
+	https://deeplearning4j.org/cn/troubleshootingneuralnets
+
+7，哪里有已训练好的模型
+回答：先了解“迁移学习”的思想，然后参考：
+	https://github.com/deeplearning4j/deeplearning4j/tree/master/deeplearning4j-zoo
+
+8，内存管理
+参考：https://deeplearning4j.org/memory
+	示例：-Xms1G -Xmx2G -Dorg.bytedeco.javacpp.maxbytes=8G -Dorg.bytedeco.javacpp.maxphysicalbytes=8G
+
