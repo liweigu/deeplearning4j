@@ -1,0 +1,17 @@
+http://archive.ics.uci.edu/ml/index.php
+http://aws.amazon.com/publicdatasets/
+http://www.kaggle.com/competitions
+http://www.kdnuggets.com/datasets/index.html
+https://mp.weixin.qq.com/s?__biz=MzI4ODU5NjQ3OQ==&mid=2247483972&idx=1&sn=c7f7bbb3312934468912705d74d7c07f&chksm=ec3d4ad4db4ac3c25b6dbf7ce002195d3086e075b4b8087a252735a71c370e78fce074e832ef&mpshare=1&scene=23&srcid=1212moFaKMWXuk3LOpfsACna#rd
+https://www.quandl.com/
+
+http://archive.ics.uci.edu/ml/datasets.html
+
+20G的金融行业数据集
+http://mp.weixin.qq.com/s/_NS0UUDr84yq0rLg7jfr5g
+
+图片数据
+http://labelme.csail.mit.edu/Release3.0/index.php?message=1
+
+影像数据
+http://www.91weitu.com/
