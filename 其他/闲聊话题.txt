@@ -1,3 +1,7 @@
 1，Java和Python哪个好？
 回答：Java有强大的配套架构体系，Python有非常简洁且易上手的语法，各有优缺点。并不是会Java或Python就能做深度学习，语言只是工具。
 参考：https://www.oschina.net/news/92495/popular-programming-languages-2018
+
+2，如何做股票预测
+回答：全球AI挑战赛（https://challenger.ai/）里股票预测题，最高分也只有56，个人认为仅用AI对股票预测的帮助非常有限。
+参考：http://mp.weixin.qq.com/s/3QVaRNsf5LsX4c3EKnubbg
