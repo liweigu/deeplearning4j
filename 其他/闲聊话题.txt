@@ -4,4 +4,6 @@
 
 2，如何做股票预测
 回答：全球AI挑战赛（https://challenger.ai/）里股票预测题，最高分也只有56，个人认为仅用AI对股票预测的帮助非常有限。
-参考：http://mp.weixin.qq.com/s/3QVaRNsf5LsX4c3EKnubbg
+参考：1）http://mp.weixin.qq.com/s/3QVaRNsf5LsX4c3EKnubbg
+	2）10分钟教你看懂K线图交易策略
+	http://mp.weixin.qq.com/s/xN5mKrl--7CqgQjf3VKb0A

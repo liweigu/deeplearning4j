@@ -1,0 +1,7 @@
+https://deeplearning4j.org/lstm.html
+https://deeplearning4j.org/usingrnns
+	It is not possible to change the number of examples between calls of rnnTimeStep (in other words, if the first use of rnnTimeStep is for say 3 examples, all subsequent calls must be with 3 examples). After resetting the internal state (using rnnClearPreviousState()), any number of examples can be used for the next call of rnnTimeStep.
+
+http://proceedings.mlr.press/v37/jozefowicz15.pdf
+	adding a bias of size 1 significantly improved the performance of the LSTM
+http://www.felixgers.de/papers/phd.pdf
