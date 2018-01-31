@@ -5,3 +5,6 @@ https://deeplearning4j.org/usingrnns
 http://proceedings.mlr.press/v37/jozefowicz15.pdf
 	adding a bias of size 1 significantly improved the performance of the LSTM
 http://www.felixgers.de/papers/phd.pdf
+
+´ÓLSTMµ½Seq2Seq
+http://mp.weixin.qq.com/s/fBrt4g_Kjmt1tGVZw5KgrQ

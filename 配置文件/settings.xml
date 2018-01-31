@@ -114,12 +114,6 @@
 			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
 			<mirrorOf>central</mirrorOf>
 		</mirror>
-		<mirror>
-			<id>MyNexus</id>
-			<name>My Nexus</name>
-			<url>http://maven.liweigu.top:9087/repository/maven-public/</url>
-			<mirrorOf>*</mirrorOf>
-		</mirror>
 	</mirrors>
 
 	<!-- profiles | This is a list of profiles which can be activated in a variety 
