@@ -1,0 +1,38 @@
+使用每日构建（编译）版本：
+1）参考 https://deeplearning4j.org/snapshots
+2）基于源码编译
+参考
+https://deeplearning4j.org/buildinglocally
+A)Ubuntu
+	1) cmake
+	wget https://cmake.org/files/v3.10/cmake-3.10.2.tar.gz
+	tar -xf .. && cd &&
+	./bootstrap
+	#make -j8
+	make
+	make install
+	cmake --version
+	2)
+	./build-dl4j-stack.sh
+	默认编译结果目录：
+	/root/.m2/repository/
+B)Windows
+	1)gcc
+	pacman -S msys/gcc
+	pacman -S perl
+	pacman -S git
+	2)OpenBLAS
+	http://www.openblas.net/
+	http://blog.csdn.net/shuzfan/article/details/51966873
+	make /d/soft/1 install
+	cp -r /opt/OpenBLAS/ /d/soft/
+	3)加入PATH
+	D:\soft\OpenBLAS\bin
+	C:\program1\mkl\compilers_and_libraries_2018.1.156\windows\redist\intel64_win\mkl
+	4)set LIBND4J_HOME=D:\soft\BigData\dl4j\compile\nd4j
+	export PATH=$PATH:/d/soft/java/apache-maven-3.3.9/bin/:/c/program1/myeclipse2016/binary/com.sun.java.jdk8.win32.x86_64_1.8.0.u66:/c/program1/mkl/compilers_and_libraries_2018.1.156/windows/redist/intel64_win/mkl:/d/soft/OpenBLAS/bin
+	export LIBND4J_HOME=/d/soft/BigData/dl4j/compile/nd4j
+	5)报错：Intel MKL FATAL ERROR: Cannot load mkl_intel_thread.dll.
+	解决办法：http://blog.csdn.net/u011669700/article/details/78974892
+	（这个错误，我还没能解决）
+

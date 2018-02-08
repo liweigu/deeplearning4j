@@ -49,3 +49,4 @@ Adam那么棒,为什么还对SGD念念不忘？
 7，内存管理
 参考：https://deeplearning4j.org/memory
 	示例：-Xms1G -Xmx2G -Dorg.bytedeco.javacpp.maxbytes=8G -Dorg.bytedeco.javacpp.maxphysicalbytes=8G
+

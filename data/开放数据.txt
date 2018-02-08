@@ -18,3 +18,6 @@ http://www.91weitu.com/
 
 500款各领域机器学习数据集
 http://mp.weixin.qq.com/s/i8kMllSz9e84EiJqO9qSpg
+
+人脸识别
+https://github.com/ADRIEN9631/dl4j-examples/tree/6e19a31ae4f185c3a76afff4c83da674d3e58a9b/dl4j-examples/src/main/resources/ORLDataSet
