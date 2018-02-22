@@ -1,20 +1,45 @@
-使用每日构建（编译）版本：
-1）参考 https://deeplearning4j.org/snapshots
-2）基于源码编译
-参考
+Using lastest version:
+1) https://deeplearning4j.org/snapshots
+2) build from source
 https://deeplearning4j.org/buildinglocally
-A)Ubuntu
+A)Linux
+	0) preInstall
+		a)Ubuntu
+		apt-get -y update && \
+		apt-get purge libc6-dev -y && \
+		apt-get install -y gcc g++ build-essential default-jre tzdata automake autoconf libtool make tcl tk expect cpio locales fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming maven cmake libgomp1 git libc6-dev libc6-dev-i386
+		b)centos
+		yum install gcc gcc-c++
+		http://blog.csdn.net/tangyi2008/article/details/42100049
+		https://www.cnblogs.com/cynchanpin/p/6807239.html
 	1) cmake
 	wget https://cmake.org/files/v3.10/cmake-3.10.2.tar.gz
-	tar -xf .. && cd &&
+	tar -xf cmake-3.10.2.tar.gz && cd cmake-3.10.2
 	./bootstrap
-	#make -j8
-	make
+	make -j8
+	#make
 	make install
 	cmake --version
-	2)
+	2) OpenBlas
+	git clone git://github.com/xianyi/OpenBLAS
+	cd OpenBLAS
+	# make FC=gfortran
+	make
+	make PREFIX=/usr/local/ install
+	3) gfortran
+	http://sxyqhyt.iteye.com/blog/2322872
+	wget http://gfortran.meteodat.ch/download/x86_64/nightlies/gcc-trunk.tar.xz
+	tar -xf gcc-trunk.tar
+	mv gcc-trunk  /opt
+	export  LD_LIBRARY_PATH="/opt/gcc-trunk/lib64:$LD_LIBRARY_PATH"
+	export PATH=/opt/gcc-trunk/bin:$PATH
+	gfortran --version
+	4) MKL
+	https://software.intel.com/en-us/mkl
+	http://blog.csdn.net/ray_up/article/details/38683383
+	5)
 	./build-dl4j-stack.sh
-	默认编译结果目录：
+	The compiled result dir (default):
 	/root/.m2/repository/
 B)Windows
 	1)gcc
@@ -26,7 +51,7 @@ B)Windows
 	http://blog.csdn.net/shuzfan/article/details/51966873
 	make /d/soft/1 install
 	cp -r /opt/OpenBLAS/ /d/soft/
-	3)加入PATH
+	3)Add to PATH:
 	D:\soft\OpenBLAS\bin
 	C:\program1\mkl\compilers_and_libraries_2018.1.156\windows\redist\intel64_win\mkl
 	4)set LIBND4J_HOME=D:\soft\BigData\dl4j\compile\nd4j

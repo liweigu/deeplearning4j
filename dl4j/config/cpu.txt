@@ -1,0 +1,9 @@
+1,Specify using cpu or gpu:
+	https://deeplearning4j.org/cn/gpu
+	1) config pom.xml
+	2) BACKEND_PRIORITY_CPU=100
+	   BACKEND_PRIORITY_GPU=0
+
+2£©Training using multi-threads:
+	OMP_NUM_THREADS=N (N=2,3,4...)
+
