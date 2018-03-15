@@ -32,7 +32,7 @@ public class LSTMSample {
 
 		// 训练数据有1500个样本，每个样本是长度为10的double数组
 		DataSet trainData = getRandomData(10, 1500);
-		// 测试数据有1500个样本，每个样本是长度为10的double数组
+		// 测试数据有1个样本，每个样本是长度为10的double数组
 		DataSet testData = getRandomData(10, 1);
 
 		// 训练1000次
