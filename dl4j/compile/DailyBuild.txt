@@ -31,8 +31,8 @@ A)Linux
 	wget http://gfortran.meteodat.ch/download/x86_64/nightlies/gcc-trunk.tar.xz
 	tar -xf gcc-trunk.tar
 	mv gcc-trunk  /opt
-	export  LD_LIBRARY_PATH="/opt/gcc-trunk/lib64:$LD_LIBRARY_PATH"
-	export PATH=/opt/gcc-trunk/bin:$PATH
+	export LD_LIBRARY_PATH="/opt/gcc-trunk/lib64:$LD_LIBRARY_PATH:/root/soft/cmake/cmake-3.10.2/bin:$JAVA_HOME/bin"
+	export PATH=/opt/gcc-trunk/bin:$PATH:/root/soft/cmake/cmake-3.10.2/bin:$JAVA_HOME/bin
 	gfortran --version
 	4) MKL
 	https://software.intel.com/en-us/mkl
