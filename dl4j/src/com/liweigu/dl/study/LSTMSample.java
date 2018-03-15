@@ -1,7 +1,11 @@
 package com.liweigu.dl.study;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
+import org.deeplearning4j.nn.conf.LearningRatePolicy;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration.ListBuilder;
@@ -16,11 +20,13 @@ import org.deeplearning4j.ui.storage.InMemoryStatsStorage;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
+import org.nd4j.linalg.dataset.api.preprocessor.NormalizerMinMaxScaler;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 /**
  * 基于数值的LSTM示例。
+ * 状态：调试阶段。
  * 
  * @author liweigu
  *
@@ -30,10 +36,17 @@ public class LSTMSample {
 	public static void main(String[] args) {
 		MultiLayerNetwork net = getNet();
 
-		// 训练数据有1500个样本，每个样本是长度为10的double数组
-		DataSet trainData = getRandomData(10, 1500);
+		// 训练数据有10000个样本，每个样本是长度为10的double数组
+		DataSet trainData = getRandomData(10, 10000);
 		// 测试数据有1个样本，每个样本是长度为10的double数组
 		DataSet testData = getRandomData(10, 1);
+
+		NormalizerMinMaxScaler normalizer = new NormalizerMinMaxScaler(0, 1);
+		normalizer.fitLabel(true);
+		normalizer.fit(trainData);
+
+		normalizer.transform(trainData);
+		normalizer.transform(testData);
 
 		// 训练1000次
 		int epochs = 1000;
@@ -42,10 +55,12 @@ public class LSTMSample {
 			net.rnnClearPreviousState();
 		}
 
-		// 是否需要rnnClearPreviousState？
-		 net.rnnClearPreviousState();
 		// 用测试数据预测，并查看结果。
 		INDArray predicted = net.rnnTimeStep(testData.getFeatureMatrix());
+
+		normalizer.revert(testData);
+		normalizer.revertLabels(predicted);
+
 		System.out.println("testData:");
 		System.out.println(testData);
 		System.out.println("result:");
@@ -102,7 +117,7 @@ public class LSTMSample {
 	 * @return 下一个值
 	 */
 	public static double calculateNextValue(double x) {
-		return x * 1.1;
+		return x + 1;
 		// int n = 1000;
 		// return x > n ? x % n : x * 2 + 1;
 	}
@@ -113,25 +128,43 @@ public class LSTMSample {
 	 * @return 网络
 	 */
 	public static MultiLayerNetwork getNet() {
-		double learningRate = 0.0005;
+		Map<Integer, Double> lrSchedule = new HashMap<Integer, Double>();
+		lrSchedule.put(0, 1e-3);
+		lrSchedule.put(800, 1e-4);
+		// lrSchedule.put(900, 1e-5);
+		double l2 = 1e-6;
 		int inNum = 1;
-		int hiddenCount = 10;
+		int hiddenCount = 3;
 		int outNum = 1;
 		NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder();
 		builder.seed(140);
 		builder.optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT);
 		builder.weightInit(WeightInit.XAVIER);
-		builder.updater(Updater.NESTEROVS);
-		builder.learningRate(learningRate);
+		builder.updater(Updater.NESTEROVS); // NESTEROVS, RMSPROP, ADAGRAD
+		builder.learningRateDecayPolicy(LearningRatePolicy.Schedule);
+		builder.learningRateSchedule(lrSchedule);
+		builder.l2(l2);
 		ListBuilder listBuilder = builder.list();
-		listBuilder.layer(0, new GravesLSTM.Builder().activation(Activation.TANH).nIn(inNum).nOut(hiddenCount).build());
-		listBuilder.layer(1, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MSE).activation(Activation.IDENTITY).nIn(hiddenCount).nOut(outNum).build());
+		listBuilder.layer(0,
+				new GravesLSTM.Builder()
+				.activation(Activation.TANH) // SOFTSIGN, TANH
+				.nIn(inNum)
+				.nOut(hiddenCount)
+				.build());
+		listBuilder.layer(1,
+				new RnnOutputLayer.Builder(LossFunctions.LossFunction.MSE)
+				.activation(Activation.IDENTITY)
+				.nIn(hiddenCount)
+				.nOut(outNum)
+				.build());
+		listBuilder.pretrain(false);
+		listBuilder.backprop(true);
 		MultiLayerConfiguration conf = listBuilder.build();
 
 		MultiLayerNetwork net = new MultiLayerNetwork(conf);
 		net.init();
 
-		// showUI
+		// showUI: http://localhost:9000
 		UIServer uiServer = UIServer.getInstance();
 		StatsStorage statsStorage = new InMemoryStatsStorage();
 		uiServer.attach(statsStorage);
