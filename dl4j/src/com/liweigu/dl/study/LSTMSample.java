@@ -53,7 +53,7 @@ public class LSTMSample {
 	}
 
 	/**
-	 * 生成DataSet
+	 * 生成DataSet。方法内部有随机数，每次返回的结果不同。
 	 * 
 	 * @param size 长度
 	 * @param sampleCount 样本个数
