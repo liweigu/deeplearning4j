@@ -31,9 +31,9 @@ public class LSTMSample {
 		MultiLayerNetwork net = getNet();
 
 		// 训练数据有1500个样本，每个样本是长度为10的double数组
-		DataSet trainData = getData(10, 1500);
+		DataSet trainData = getRandomData(10, 1500);
 		// 测试数据有1500个样本，每个样本是长度为10的double数组
-		DataSet testData = getData(10, 1);
+		DataSet testData = getRandomData(10, 1);
 
 		// 训练1000次
 		int epochs = 1000;
@@ -59,7 +59,7 @@ public class LSTMSample {
 	 * @param sampleCount 样本个数
 	 * @return DataSet
 	 */
-	public static DataSet getData(int size, int sampleCount) {
+	public static DataSet getRandomData(int size, int sampleCount) {
 		INDArray stackedInputNDArray = null;
 		INDArray stackedOutputNDArray = null;
 		// 维度是1
