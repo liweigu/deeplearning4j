@@ -48,8 +48,8 @@ public class LSTMSample {
 		normalizer.transform(trainData);
 		normalizer.transform(testData);
 
-		// 训练1000次
-		int epochs = 1000;
+		// 训练
+		int epochs = 500;
 		for (int i = 0; i < epochs; i++) {
 			net.fit(trainData);
 			net.rnnClearPreviousState();
@@ -129,10 +129,10 @@ public class LSTMSample {
 	 */
 	public static MultiLayerNetwork getNet() {
 		Map<Integer, Double> lrSchedule = new HashMap<Integer, Double>();
-		lrSchedule.put(0, 1e-3);
-		lrSchedule.put(800, 1e-4);
-		// lrSchedule.put(900, 1e-5);
-		double l2 = 1e-6;
+		lrSchedule.put(0, 1e-4);
+		// lrSchedule.put(1000, 5e-5);
+		// lrSchedule.put(1500, 1e-5);
+		// double l2 = 1e-6;
 		int inNum = 1;
 		int hiddenCount = 3;
 		int outNum = 1;
@@ -143,7 +143,7 @@ public class LSTMSample {
 		builder.updater(Updater.NESTEROVS); // NESTEROVS, RMSPROP, ADAGRAD
 		builder.learningRateDecayPolicy(LearningRatePolicy.Schedule);
 		builder.learningRateSchedule(lrSchedule);
-		builder.l2(l2);
+		// builder.l2(l2);
 		ListBuilder listBuilder = builder.list();
 		listBuilder.layer(0,
 				new GravesLSTM.Builder()
