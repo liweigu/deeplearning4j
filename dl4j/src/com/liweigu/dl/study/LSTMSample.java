@@ -25,8 +25,7 @@ import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 
 /**
- * 基于数值的LSTM示例。
- * 状态：调试阶段。
+ * 基于数值的LSTM示例。 状态：调试阶段。
  * 
  * @author liweigu
  *
@@ -49,7 +48,7 @@ public class LSTMSample {
 		normalizer.transform(testData);
 
 		// 训练
-		int epochs = 500;
+		int epochs = 3000;
 		for (int i = 0; i < epochs; i++) {
 			net.fit(trainData);
 			net.rnnClearPreviousState();
@@ -84,7 +83,7 @@ public class LSTMSample {
 		double[] output = new double[size * sampleCount * demension];
 		for (int sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++) {
 			// 随机生成起点值
-			double startValue = Math.random() * 100;
+			double startValue = Math.random() * 1;
 			input[sampleIndex * size] = startValue;
 			output[sampleIndex * size] = calculateNextValue(startValue);
 			for (int i = 1; i < size; i++) {
@@ -117,7 +116,8 @@ public class LSTMSample {
 	 * @return 下一个值
 	 */
 	public static double calculateNextValue(double x) {
-		return x + 1;
+		// return x + 1;
+		return Math.sin(x);
 		// int n = 1000;
 		// return x > n ? x % n : x * 2 + 1;
 	}
@@ -128,35 +128,28 @@ public class LSTMSample {
 	 * @return 网络
 	 */
 	public static MultiLayerNetwork getNet() {
-		Map<Integer, Double> lrSchedule = new HashMap<Integer, Double>();
-		lrSchedule.put(0, 1e-4);
-		// lrSchedule.put(1000, 5e-5);
-		// lrSchedule.put(1500, 1e-5);
+//		double learningRate = 1e-3;
+		 Map<Integer, Double> lrSchedule = new HashMap<Integer, Double>();
+		 lrSchedule.put(0, 1e-3);
+		 lrSchedule.put(2000, 5e-4);
+//		 lrSchedule.put(1500, 5e-4);
 		// double l2 = 1e-6;
 		int inNum = 1;
-		int hiddenCount = 3;
+		int hiddenCount = 20;
 		int outNum = 1;
 		NeuralNetConfiguration.Builder builder = new NeuralNetConfiguration.Builder();
 		builder.seed(140);
 		builder.optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT);
 		builder.weightInit(WeightInit.XAVIER);
 		builder.updater(Updater.NESTEROVS); // NESTEROVS, RMSPROP, ADAGRAD
-		builder.learningRateDecayPolicy(LearningRatePolicy.Schedule);
-		builder.learningRateSchedule(lrSchedule);
+		 builder.learningRateDecayPolicy(LearningRatePolicy.Schedule);
+		 builder.learningRateSchedule(lrSchedule);
+//		builder.learningRate(learningRate);
 		// builder.l2(l2);
 		ListBuilder listBuilder = builder.list();
-		listBuilder.layer(0,
-				new GravesLSTM.Builder()
-				.activation(Activation.TANH) // SOFTSIGN, TANH
-				.nIn(inNum)
-				.nOut(hiddenCount)
-				.build());
-		listBuilder.layer(1,
-				new RnnOutputLayer.Builder(LossFunctions.LossFunction.MSE)
-				.activation(Activation.IDENTITY)
-				.nIn(hiddenCount)
-				.nOut(outNum)
-				.build());
+		listBuilder.layer(0, new GravesLSTM.Builder().activation(Activation.TANH) // SOFTSIGN, TANH
+				.nIn(inNum).nOut(hiddenCount).build());
+		listBuilder.layer(1, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MSE).activation(Activation.IDENTITY).nIn(hiddenCount).nOut(outNum).build());
 		listBuilder.pretrain(false);
 		listBuilder.backprop(true);
 		MultiLayerConfiguration conf = listBuilder.build();
