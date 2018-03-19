@@ -1,15 +1,14 @@
-package com.liweigu.dl.study;
+package com.liweigu.dls.offical.nlp;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
-import org.deeplearning4j.nn.conf.LearningRatePolicy;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration.ListBuilder;
-import org.deeplearning4j.nn.conf.Updater;
 import org.deeplearning4j.nn.conf.layers.GravesLSTM;
 import org.deeplearning4j.nn.conf.layers.RnnOutputLayer;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -22,17 +21,15 @@ import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.preprocessor.NormalizerMinMaxScaler;
 import org.nd4j.linalg.factory.Nd4j;
+import org.nd4j.linalg.learning.config.Nesterovs;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
+import org.nd4j.linalg.schedule.ISchedule;
+import org.nd4j.linalg.schedule.MapSchedule;
+import org.nd4j.linalg.schedule.ScheduleType;
 
-/**
- * 基于数值的LSTM示例。 状态：调试阶段。
- * 
- * @author liweigu
- *
- */
 public class LSTMSample {
 
-	public static void main(String[] args) {
+	public static void run() {
 		MultiLayerNetwork net = getNet();
 
 		// 训练数据有10000个样本，每个样本是长度为10的double数组
@@ -48,7 +45,7 @@ public class LSTMSample {
 		normalizer.transform(testData);
 
 		// 训练
-		int epochs = 3000;
+		int epochs = 20000; // 30000
 		for (int i = 0; i < epochs; i++) {
 			net.fit(trainData);
 			net.rnnClearPreviousState();
@@ -64,6 +61,11 @@ public class LSTMSample {
 		System.out.println(testData);
 		System.out.println("result:");
 		System.out.println(predicted);
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -116,10 +118,7 @@ public class LSTMSample {
 	 * @return 下一个值
 	 */
 	public static double calculateNextValue(double x) {
-		// return x + 1;
-		return Math.sin(x);
-		// int n = 1000;
-		// return x > n ? x % n : x * 2 + 1;
+		return Math.sin(x) * 1;
 	}
 
 	/**
@@ -128,11 +127,14 @@ public class LSTMSample {
 	 * @return 网络
 	 */
 	public static MultiLayerNetwork getNet() {
-//		double learningRate = 1e-3;
-		 Map<Integer, Double> lrSchedule = new HashMap<Integer, Double>();
-		 lrSchedule.put(0, 1e-3);
-		 lrSchedule.put(2000, 5e-4);
-//		 lrSchedule.put(1500, 5e-4);
+		// double learningRate = 1e-6;
+		Map<Integer, Double> lrSchedule = new HashMap<Integer, Double>();
+		lrSchedule = new HashMap<Integer, Double>();
+		lrSchedule.put(0, 1e-3);
+		lrSchedule.put(16000, 5e-4);
+		// lrSchedule.put(24000, 2e-4);
+
+		ISchedule mapSchedule = new MapSchedule(ScheduleType.ITERATION, lrSchedule);
 		// double l2 = 1e-6;
 		int inNum = 1;
 		int hiddenCount = 20;
@@ -141,10 +143,7 @@ public class LSTMSample {
 		builder.seed(140);
 		builder.optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT);
 		builder.weightInit(WeightInit.XAVIER);
-		builder.updater(Updater.NESTEROVS); // NESTEROVS, RMSPROP, ADAGRAD
-		 builder.learningRateDecayPolicy(LearningRatePolicy.Schedule);
-		 builder.learningRateSchedule(lrSchedule);
-//		builder.learningRate(learningRate);
+		builder.updater(new Nesterovs(mapSchedule, 0.9)); // NESTEROVS, RMSPROP, ADAGRAD
 		// builder.l2(l2);
 		ListBuilder listBuilder = builder.list();
 		listBuilder.layer(0, new GravesLSTM.Builder().activation(Activation.TANH) // SOFTSIGN, TANH
