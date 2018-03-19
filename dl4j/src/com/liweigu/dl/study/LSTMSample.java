@@ -27,8 +27,18 @@ import org.nd4j.linalg.schedule.ISchedule;
 import org.nd4j.linalg.schedule.MapSchedule;
 import org.nd4j.linalg.schedule.ScheduleType;
 
+/**
+ * 简单的LSTM示例。
+ * 基于数值进行模型训练和预测，数值的规则由calculateNextValue方法确定。
+ * 在DL4J的0.9.2_snapshot以上版本运行。
+ * 
+ * @author liweigu
+ *
+ */
 public class LSTMSample {
-
+	/**
+	 * 训练模型和测试
+	 */
 	public static void run() {
 		MultiLayerNetwork net = getNet();
 
@@ -37,23 +47,25 @@ public class LSTMSample {
 		// 测试数据有1个样本，每个样本是长度为10的double数组
 		DataSet testData = getRandomData(10, 1);
 
+		// 将数据标准化到0~1之间
 		NormalizerMinMaxScaler normalizer = new NormalizerMinMaxScaler(0, 1);
 		normalizer.fitLabel(true);
 		normalizer.fit(trainData);
-
 		normalizer.transform(trainData);
 		normalizer.transform(testData);
 
-		// 训练
-		int epochs = 20000; // 30000
+		// 训练，设置迭代次数。
+		int epochs = 10000; // 30000
 		for (int i = 0; i < epochs; i++) {
 			net.fit(trainData);
+			// LSTM需要清理状态，再进行下轮训练或测试。
 			net.rnnClearPreviousState();
 		}
 
 		// 用测试数据预测，并查看结果。
 		INDArray predicted = net.rnnTimeStep(testData.getFeatureMatrix());
 
+		// 还原数据以便于查看
 		normalizer.revert(testData);
 		normalizer.revertLabels(predicted);
 
@@ -62,6 +74,7 @@ public class LSTMSample {
 		System.out.println("result:");
 		System.out.println(predicted);
 		try {
+			// 让程序挂起不退出
 			System.in.read();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,7 +86,7 @@ public class LSTMSample {
 	 * 
 	 * @param size 长度
 	 * @param sampleCount 样本个数
-	 * @return DataSet
+	 * @return DataSet 随机数据
 	 */
 	public static DataSet getRandomData(int size, int sampleCount) {
 		INDArray stackedInputNDArray = null;
@@ -85,7 +98,7 @@ public class LSTMSample {
 		double[] output = new double[size * sampleCount * demension];
 		for (int sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++) {
 			// 随机生成起点值
-			double startValue = Math.random() * 1;
+			double startValue = Math.random() / 2 + 0.5;
 			input[sampleIndex * size] = startValue;
 			output[sampleIndex * size] = calculateNextValue(startValue);
 			for (int i = 1; i < size; i++) {
@@ -118,7 +131,7 @@ public class LSTMSample {
 	 * @return 下一个值
 	 */
 	public static double calculateNextValue(double x) {
-		return Math.sin(x) * 1;
+		return Math.sin(x);
 	}
 
 	/**
@@ -127,15 +140,14 @@ public class LSTMSample {
 	 * @return 网络
 	 */
 	public static MultiLayerNetwork getNet() {
-		// double learningRate = 1e-6;
 		Map<Integer, Double> lrSchedule = new HashMap<Integer, Double>();
 		lrSchedule = new HashMap<Integer, Double>();
 		lrSchedule.put(0, 1e-3);
-		lrSchedule.put(16000, 5e-4);
+		// lrSchedule.put(16000, 5e-4);
 		// lrSchedule.put(24000, 2e-4);
 
 		ISchedule mapSchedule = new MapSchedule(ScheduleType.ITERATION, lrSchedule);
-		// double l2 = 1e-6;
+		double l2 = 1e-6;
 		int inNum = 1;
 		int hiddenCount = 20;
 		int outNum = 1;
@@ -144,11 +156,12 @@ public class LSTMSample {
 		builder.optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT);
 		builder.weightInit(WeightInit.XAVIER);
 		builder.updater(new Nesterovs(mapSchedule, 0.9)); // NESTEROVS, RMSPROP, ADAGRAD
-		// builder.l2(l2);
+		builder.l2(l2);
 		ListBuilder listBuilder = builder.list();
 		listBuilder.layer(0, new GravesLSTM.Builder().activation(Activation.TANH) // SOFTSIGN, TANH
 				.nIn(inNum).nOut(hiddenCount).build());
-		listBuilder.layer(1, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MSE).activation(Activation.IDENTITY).nIn(hiddenCount).nOut(outNum).build());
+		listBuilder.layer(1, new RnnOutputLayer.Builder(LossFunctions.LossFunction.MSE)
+				.activation(Activation.IDENTITY).nIn(hiddenCount).nOut(outNum).build());
 		listBuilder.pretrain(false);
 		listBuilder.backprop(true);
 		MultiLayerConfiguration conf = listBuilder.build();
@@ -156,7 +169,7 @@ public class LSTMSample {
 		MultiLayerNetwork net = new MultiLayerNetwork(conf);
 		net.init();
 
-		// showUI: http://localhost:9000
+		// 显示训练过程: http://localhost:9000
 		UIServer uiServer = UIServer.getInstance();
 		StatsStorage statsStorage = new InMemoryStatsStorage();
 		uiServer.attach(statsStorage);
