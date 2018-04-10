@@ -3,11 +3,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.liweigu</groupId>
-	<artifactId>dl100</artifactId>
+	<artifactId>dls</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>dl100</name>
+	<name>dls</name>
 	<url>http://maven.apache.org</url>
 
 	<repositories>
@@ -17,6 +17,10 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>daily</updatePolicy>  <!-- Optional, update daily -->
+			</snapshots>
 		</repository>
 	</repositories>
 
@@ -42,8 +46,8 @@
 		<openblas.version>0.2.20</openblas.version>
 		<mkl.version>2018.1</mkl.version>
 		<nd4j.backend>nd4j-native</nd4j.backend>
-		<javacpp-presets.version>1.4.1</javacpp-presets.version>
-		<dl4j.version>1.0.0-alpha</dl4j.version>
+		<javacpp-presets.version>1.4</javacpp-presets.version>
+		<dl4j.version>0.9.2-SNAPSHOT</dl4j.version>
 	</properties>
 
 	<dependencies>
@@ -53,12 +57,15 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- nd4j start -->
+		<!-- tool start 
 		<dependency>
-		  <groupId>org.bytedeco</groupId>
-		  <artifactId>javacpp</artifactId>
-		  <version>${javacpp-presets.version}</version>
+			<groupId>com.dituhui</groupId>
+			<artifactId>tool</artifactId>
+			<version>1.0.0</version>
 		</dependency>
+		 tool end -->
+		<!-- nd4j start -->
+		<!-- -->
 		<dependency>
 			<groupId>org.bytedeco.javacpp-presets</groupId>
 			<artifactId>openblas-platform</artifactId>
@@ -98,6 +105,11 @@
 			<groupId>org.nd4j</groupId>
 			<artifactId>nd4j-native-platform</artifactId>
 			<version>${dl4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacpp</artifactId>
+			<version>1.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nd4j</groupId>
@@ -142,5 +154,12 @@
 			<version>${dl4j.version}</version>
 		</dependency>
 		<!-- dl4j end -->
+		<!-- 分词 start -->
+		<dependency>
+			<groupId>com.hankcs</groupId>
+			<artifactId>hanlp</artifactId>
+			<version>portable-1.5.4</version>
+		</dependency>
+		<!-- 分词 end -->
 	</dependencies>
 </project>
