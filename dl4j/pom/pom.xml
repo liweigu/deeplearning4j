@@ -17,6 +17,7 @@
 			<releases>
 				<enabled>true</enabled>
 			</releases>
+			<!--<snapshots><enabled>true</enabled> <updatePolicy>daily</updatePolicy></snapshots> -->
 		</repository>
 	</repositories>
 
@@ -31,9 +32,6 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
-				<configuration> <forkMode>pertest</forkMode> <argLine>-Xms2G -Xmx2G -Dorg.bytedeco.javacpp.maxbytes=7G 
-				-Dorg.bytedeco.javacpp.maxphysicalbytes=6G</argLine> </configuration> </plugin> -->
 		</plugins>
 	</build>
 
@@ -44,6 +42,7 @@
 		<nd4j.backend>nd4j-native</nd4j.backend>
 		<javacpp-presets.version>1.4.1</javacpp-presets.version>
 		<dl4j.version>1.0.0-alpha</dl4j.version>
+		<cuda.version>9.0</cuda.version>
 	</properties>
 
 	<dependencies>
@@ -54,10 +53,11 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- nd4j start -->
+		<!-- -->
 		<dependency>
-		  <groupId>org.bytedeco</groupId>
-		  <artifactId>javacpp</artifactId>
-		  <version>${javacpp-presets.version}</version>
+			<groupId>org.bytedeco</groupId>
+			<artifactId>javacpp</artifactId>
+			<version>${javacpp-presets.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bytedeco.javacpp-presets</groupId>
@@ -96,14 +96,28 @@
 		</dependency>
 		<dependency>
 			<groupId>org.nd4j</groupId>
+			<artifactId>nd4j-common</artifactId>
+			<version>${dl4j.version}</version>
+		</dependency>
+		<!-- Used for cpu -->
+		<dependency>
+			<groupId>org.nd4j</groupId>
 			<artifactId>nd4j-native-platform</artifactId>
+			<version>${dl4j.version}</version>
+		</dependency>
+		<!-- Used for gpu -->
+		<!--
+		<dependency>
+			<groupId>org.nd4j</groupId>
+			<artifactId>nd4j-cuda-${cuda.version}</artifactId>
 			<version>${dl4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nd4j</groupId>
-			<artifactId>nd4j-common</artifactId>
+			<artifactId>nd4j-cuda-${cuda.version}-platform</artifactId>
 			<version>${dl4j.version}</version>
 		</dependency>
+		-->
 		<!-- nd4j end -->
 		<!-- dl4j start -->
 		<dependency>
