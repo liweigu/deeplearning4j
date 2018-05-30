@@ -41,7 +41,7 @@
 		<mkl.version>2018.1</mkl.version>
 		<nd4j.backend>nd4j-native</nd4j.backend>
 		<javacpp-presets.version>1.4.1</javacpp-presets.version>
-		<dl4j.version>1.0.0-alpha</dl4j.version>
+		<dl4j.version>1.0.0-beta</dl4j.version>
 		<cuda.version>9.0</cuda.version>
 	</properties>
 

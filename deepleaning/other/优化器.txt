@@ -1,0 +1,2 @@
+深度学习最全优化方法总结比较（SGD，Adagrad，Adadelta，Adam，Adamax，Nadam）
+https://blog.csdn.net/u012759136/article/details/52302426
