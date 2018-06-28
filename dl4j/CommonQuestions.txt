@@ -9,6 +9,8 @@
   7）https://github.com/Gerry-Pan/pan-dl4j （QQ群成员分享）
   8）https://blog.skymind.ai/
   9）https://github.com/sleechengn/deeplearning
+  10）https://github.com/klevis
+  11）https://www.bilibili.com/video/av23609700
 
 2，运行dl4j的mnist示例程序，报zip相关异常。
 回答：mnist示例程序需要动态从网上下载mnist数据集，下载成功后会解压文件再计算，如果下载不成功则会提示zip相关异常。建议
