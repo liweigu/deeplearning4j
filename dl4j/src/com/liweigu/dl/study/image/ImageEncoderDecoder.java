@@ -2,7 +2,9 @@ package com.liweigu.dl.study.image;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.datavec.api.split.FileSplit;
@@ -42,7 +44,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * （灰度）图片编码解码。测试代码。
+ * （灰度）图片编码解码，输出跟输入相同。
+ * 测试代码。
  * 
  * @author liweigu
  *
@@ -81,12 +84,38 @@ public class ImageEncoderDecoder {
 		LOGGER.info("training...");
 		int numEpochs = 100;
 //		numEpochs = 1;
-		iterTrain.reset();
 		for (int i = 0; i < numEpochs; i++) {
 			if (i % 10 == 0) {
 				LOGGER.info("i = " + i);
 			}
-			multiLayerNetwork.fit(iterTrain);
+			iterTrain.reset();
+			while (iterTrain.hasNext()) {
+				// 读取图片数据
+				DataSet batchData = iterTrain.next(batchSize);
+				// 转换DataSet，让 feature和label都是图像数据，即结果要跟输入一致。
+				if (batchData != null) {
+					if (batchData.numExamples() > 1) {
+						List<DataSet> dataSetList = batchData.asList();
+						List<DataSet> trainDataSetList = new ArrayList<DataSet>();
+						for (DataSet dataSet : dataSetList) {
+							INDArray features = dataSet.getFeatures();
+							INDArray labels = features;
+							DataSet trainDataSet = new DataSet(features, labels);
+							trainDataSetList.add(trainDataSet);
+						}
+						DataSet trainDataSets = DataSet.merge(trainDataSetList);
+						multiLayerNetwork.fit(trainDataSets);
+					} else {
+						DataSet dataSet = batchData;
+						INDArray features = dataSet.getFeatures();
+						INDArray labels = features;
+						DataSet trainDataSet = new DataSet(features, labels);
+						multiLayerNetwork.fit(trainDataSet);
+					}
+				} else {
+					LOGGER.info("batchData is null.");
+				}
+			}
 		}
 		LOGGER.info("training is over.");
 
