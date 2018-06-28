@@ -99,7 +99,11 @@ public class ImageEncoderDecoder {
 						List<DataSet> trainDataSetList = new ArrayList<DataSet>();
 						for (DataSet dataSet : dataSetList) {
 							INDArray features = dataSet.getFeatures();
-							INDArray labels = features;
+							int totalShape = 1;
+							for (int shape : features.shape()) {
+								totalShape *= shape;
+							}
+							INDArray labels = features.reshape(1, totalShape);
 							DataSet trainDataSet = new DataSet(features, labels);
 							trainDataSetList.add(trainDataSet);
 						}
@@ -108,7 +112,11 @@ public class ImageEncoderDecoder {
 					} else {
 						DataSet dataSet = batchData;
 						INDArray features = dataSet.getFeatures();
-						INDArray labels = features;
+						int totalShape = 1;
+						for (int shape : features.shape()) {
+							totalShape *= shape;
+						}
+						INDArray labels = features.reshape(1, totalShape);
 						DataSet trainDataSet = new DataSet(features, labels);
 						multiLayerNetwork.fit(trainDataSet);
 					}
@@ -174,7 +182,7 @@ public class ImageEncoderDecoder {
 		listBuilder = listBuilder.layer(index++, unmaxool1);
 		listBuilder = listBuilder.layer(index++,
 				new Deconvolution2D.Builder(new int[] { 5, 5 }, new int[] { 1, 1 }, new int[] { 0, 0 }).name("decnn1").nOut(1).biasInit(0).build());
-		listBuilder = listBuilder.layer(index++, new DenseLayer.Builder().nOut(244036 / 100).build());
+		listBuilder = listBuilder.layer(index++, new DenseLayer.Builder().nOut(244036 / 1000).build());
 		listBuilder = listBuilder.layer(index++,
 				new OutputLayer.Builder(LossFunctions.LossFunction.MSE).nOut(size * size * channels).activation(Activation.IDENTITY).build());
 		MultiLayerConfiguration multiLayerConfiguration = listBuilder.backprop(true).pretrain(false).setInputType(InputType.convolutional(size, size, channels))
